@@ -36,128 +36,167 @@
 
         .container {
             width: 100%;
-            max-width: 600px;
+            max-width: 500px;
             background: var(--bg-card);
-            padding: 3rem;
-            border-radius: 1.5rem;
+            padding: 2.5rem;
+            border-radius: 2rem;
             border: 1px solid var(--border);
             text-align: center;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            position: relative;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Pages */
+        .page {
+            display: none;
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         h1 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(to right, #6366f1, #a855f7);
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(to right, #818cf8, #c084fc);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-        }
-
-        .congrats-box {
-            background: var(--bg-sidebar);
-            padding: 1.5rem;
-            border-radius: 1rem;
-            margin-bottom: 2rem;
-            border: 1px solid var(--accent);
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--accent);
         }
 
         .name-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            margin-bottom: 2rem;
+            gap: 1.25rem;
         }
 
         .name-card {
             background: var(--bg-sidebar);
-            padding: 1.25rem;
-            border-radius: 0.75rem;
+            padding: 1.5rem;
+            border-radius: 1rem;
             border: 1px solid var(--border);
             cursor: pointer;
-            transition: all 0.2s;
-            font-size: 1.1rem;
-            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 1.2rem;
+            font-weight: 600;
         }
 
         .name-card:hover {
             border-color: var(--accent);
-            transform: translateY(-3px);
+            transform: scale(1.05);
             background: rgba(99, 102, 241, 0.1);
+            box-shadow: 0 10px 20px -5px var(--accent-glow);
         }
 
-        .result-box {
-            height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        /* Result Page Styles */
+        .congrats-text {
             font-size: 1.5rem;
             font-weight: 700;
-            border-top: 1px solid var(--border);
-            margin-top: 1rem;
+            color: #10b981;
+            margin-bottom: 1.5rem;
+            display: block;
+            animation: bounce 1s infinite alternate;
+        }
+
+        @keyframes bounce {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
+        }
+
+        .full-name-display {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin: 2rem 0;
+            letter-spacing: -1px;
+        }
+
+        .full-name-display span {
+            color: var(--accent);
+            text-shadow: 0 0 20px var(--accent-glow);
         }
 
         .reset-btn {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+            padding: 0.8rem 2rem;
+            border-radius: 2rem;
             cursor: pointer;
-            font-weight: 600;
-            margin-top: 1rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            margin-top: 2rem;
         }
 
         .reset-btn:hover {
-            opacity: 0.9;
+            border-color: var(--text-secondary);
+            color: var(--text-primary);
+        }
+
+        /* Particle effect placeholder */
+        .confetti {
+            position: absolute;
+            top: -50px;
+            left: 50%;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>👶 이세중 자식 이름 추천기</h1>
-        
-        <div id="congrats" class="congrats-box">
-            결과를 확인하는 중...
+        <!-- Step 1: Selection Page -->
+        <div id="page1" class="page active">
+            <h1>👶 자식 이름 고르기</h1>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;">이세중 님의 아이 이름을 하나 선택해주세요.</p>
+            <div class="name-grid">
+                <div class="name-card" onclick="showResult('모카세')">모카세</div>
+                <div class="name-card" onclick="showResult('불킥')">불킥</div>
+                <div class="name-card" onclick="showResult('리조리')">리조리</div>
+                <div class="name-card" onclick="showResult('지안')">지안</div>
+                <div class="name-card" onclick="showResult('서준')">서준</div>
+                <div class="name-card" onclick="showResult('하린')">하린</div>
+            </div>
         </div>
 
-        <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">마음에 드는 이름을 선택해 보세요!</p>
-
-        <div class="name-grid">
-            <div class="name-card" onclick="selectName('모카세')">모카세</div>
-            <div class="name-card" onclick="selectName('불킥')">불킥</div>
-            <div class="name-card" onclick="selectName('리조리')">리조리</div>
-            <div class="name-card" onclick="selectName('지안')">지안</div>
-            <div class="name-card" onclick="selectName('서준')">서준</div>
-            <div class="name-card" onclick="selectName('하린')">하린</div>
+        <!-- Step 2: Result Page -->
+        <div id="page2" class="page">
+            <span id="congratsText" class="congrats-text">축하합니다!</span>
+            <p style="color: var(--text-secondary);">세상에 태어날 아이의 이름은...</p>
+            <div class="full-name-display">
+                이<span id="chosenName"></span>
+            </div>
+            <button class="reset-btn" onclick="reset()">다시 선택하기</button>
         </div>
-
-        <div id="result" class="result-box">
-            이름을 선택해 주세요
-        </div>
-
-        <button class="reset-btn" onclick="init()">다시 하기</button>
     </div>
 
     <script>
-        const surname = "이";
-        
-        function init() {
+        function showResult(name) {
             const genders = ["아들", "딸"];
             const randomGender = genders[Math.floor(Math.random() * genders.length)];
-            document.getElementById('congrats').innerText = `🎉 축하합니다! ${randomGender}입니다!`;
-            document.getElementById('result').innerText = "이름을 선택해 주세요";
+            
+            // 데이터 설정
+            document.getElementById('congratsText').innerText = `🎉 축하합니다! ${randomGender}입니다!`;
+            document.getElementById('chosenName').innerText = name;
+
+            // 페이지 전환 애니메이션
+            document.getElementById('page1').classList.remove('active');
+            setTimeout(() => {
+                document.getElementById('page2').classList.add('active');
+            }, 100);
         }
 
-        function selectName(name) {
-            document.getElementById('result').innerHTML = `최종 이름: <span style="color: var(--accent); margin-left: 10px;">${surname}${name}</span>`;
+        function reset() {
+            document.getElementById('page2').classList.remove('active');
+            setTimeout(() => {
+                document.getElementById('page1').classList.add('active');
+            }, 100);
         }
-
-        // 초기 실행
-        init();
     </script>
 
 </body>
