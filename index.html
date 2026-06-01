@@ -3,187 +3,266 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>이세중님의 자식 이름 추천기</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>✨ 이세중님의 자식 이름 추천기: 프리미엄</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
-            --bg-main: #0b0e14;
-            --bg-card: #151921;
-            --bg-sidebar: #0f1218;
-            --text-primary: #ffffff;
-            --text-secondary: #94a3b8;
-            --accent: #6366f1;
-            --accent-glow: rgba(99, 102, 241, 0.2);
-            --border: #262c36;
+            --bg-main: #030712;
+            --accent-primary: #6366f1;
+            --accent-secondary: #a855f7;
+            --accent-tertiary: #ec4899;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Pretendard', sans-serif;
             background-color: var(--bg-main);
-            color: var(--text-primary);
+            color: var(--text-main);
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
             overflow: hidden;
+            perspective: 1000px;
         }
 
-        .container {
+        /* --- Dynamic Background Blobs --- */
+        .blob-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            max-width: 500px;
-            background: var(--bg-card);
-            padding: 2.5rem;
-            border-radius: 2rem;
-            border: 1px solid var(--border);
-            text-align: center;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            position: relative;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            height: 100%;
+            z-index: -1;
+            filter: blur(80px);
+            opacity: 0.6;
         }
 
-        /* Pages */
+        .blob {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            animation: move 20s infinite alternate;
+        }
+
+        .blob-1 { background: var(--accent-primary); top: -10%; left: -10%; animation-delay: 0s; }
+        .blob-2 { background: var(--accent-secondary); bottom: -10%; right: -10%; animation-delay: -5s; }
+        .blob-3 { background: var(--accent-tertiary); top: 50%; left: 50%; transform: translate(-50%, -50%); animation: move-center 15s infinite alternate; }
+
+        @keyframes move {
+            from { transform: translate(0, 0) scale(1); }
+            to { transform: translate(100px, 100px) scale(1.2); }
+        }
+        @keyframes move-center {
+            from { transform: translate(-50%, -50%) scale(0.8); }
+            to { transform: translate(-30%, -40%) scale(1.1); }
+        }
+
+        /* --- Main Container (Glassmorphism) --- */
+        .container {
+            width: 90%;
+            max-width: 480px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 2.5rem;
+            padding: 3rem 2rem;
+            text-align: center;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+            z-index: 10;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .container:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
+        }
+
+        /* --- Pages & Animations --- */
         .page {
             display: none;
-            animation: fadeIn 0.6s ease-out forwards;
+            opacity: 0;
+            transform: scale(0.95);
         }
 
         .page.active {
             display: block;
+            animation: pageEnter 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes pageEnter {
+            to { opacity: 1; transform: scale(1); }
         }
 
         h1 {
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(to right, #818cf8, #c084fc);
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
+        .subtitle {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            margin-bottom: 2.5rem;
+        }
+
+        /* --- Name Grid --- */
         .name-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 1.25rem;
-            margin-bottom: 1.5rem;
+            gap: 1rem;
+            margin-bottom: 2rem;
         }
 
         .name-card {
-            background: var(--bg-sidebar);
-            padding: 1.5rem;
-            border-radius: 1rem;
-            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.5rem 1rem;
+            border-radius: 1.25rem;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-size: 1.2rem;
-            font-weight: 600;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 1.25rem;
+            font-weight: 700;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .name-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: 0.5s;
         }
 
         .name-card:hover {
-            border-color: var(--accent);
-            transform: scale(1.05);
-            background: rgba(99, 102, 241, 0.1);
-            box-shadow: 0 10px 20px -5px var(--accent-glow);
+            background: rgba(99, 102, 241, 0.2);
+            border-color: var(--accent-primary);
+            transform: scale(1.08) translateY(-5px);
+            box-shadow: 0 10px 30px -10px var(--accent-primary);
         }
 
-        /* Result Page Styles */
-        .congrats-text {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #10b981;
-            margin-bottom: 1.5rem;
-            display: block;
-            animation: bounce 1s infinite alternate;
+        .name-card:hover::before {
+            left: 100%;
         }
 
-        @keyframes bounce {
-            from { transform: scale(1); }
-            to { transform: scale(1.1); }
-        }
-
-        .full-name-display {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin: 2rem 0;
-            letter-spacing: -1px;
-        }
-
-        .full-name-display span {
-            color: var(--accent);
-            text-shadow: 0 0 20px var(--accent-glow);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--text-secondary);
-            border: 1px solid var(--border);
-            padding: 0.6rem 1.5rem;
-            border-radius: 2rem;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.2s;
-            margin-top: 1rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .btn-secondary:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-
-        .shuffle-btn {
-            background: var(--accent);
+        /* --- Buttons --- */
+        .btn-main {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             color: white;
             border: none;
-            padding: 0.8rem 2rem;
-            border-radius: 2rem;
+            padding: 1.1rem;
+            border-radius: 1.25rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.5);
+        }
+
+        .btn-main:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+            box-shadow: 0 15px 30px -5px rgba(99, 102, 241, 0.6);
+        }
+
+        .btn-text {
+            background: none;
+            border: none;
+            color: var(--text-dim);
+            margin-top: 1.5rem;
             cursor: pointer;
             font-weight: 600;
-            margin-top: 1rem;
-            width: 100%;
-            transition: opacity 0.2s;
+            transition: color 0.3s;
         }
 
-        .shuffle-btn:hover {
-            opacity: 0.9;
+        .btn-text:hover { color: white; }
+
+        /* --- Result Page --- */
+        .gender-badge {
+            display: inline-block;
+            padding: 0.5rem 1.2rem;
+            border-radius: 2rem;
+            font-size: 0.85rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.3);
         }
 
+        .result-name {
+            font-size: 4.5rem;
+            font-weight: 900;
+            margin: 1.5rem 0;
+            background: linear-gradient(to bottom, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 30px rgba(99, 102, 241, 0.4));
+        }
+
+        .result-name span {
+            background: linear-gradient(135deg, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* --- Mobile Optimization --- */
+        @media (max-width: 480px) {
+            .container { padding: 2.5rem 1.5rem; }
+            .result-name { font-size: 3.5rem; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- Step 1: Selection Page -->
-        <div id="page1" class="page active">
-            <h1>👶 이세중님의 자식 이름 고르기</h1>
-            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">마음에 드는 이름을 하나 선택해주세요.</p>
+    <div class="blob-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <div class="container" id="app">
+        <!-- Step 1: Selection -->
+        <div id="page-selection" class="page active">
+            <h1>이세중님의 자식 이름</h1>
+            <p class="subtitle">미래의 아이를 위한 최고의 이름을 선택하세요</p>
             
             <div id="nameGrid" class="name-grid">
-                <!-- Names will be injected here -->
+                <!-- Names injected here -->
             </div>
 
-            <button class="shuffle-btn" onclick="shuffleNames()">🌀 다른 이름 추천받기</button>
+            <button class="btn-main" onclick="shuffleNames()">🌀 새로운 후보 추천받기</button>
         </div>
 
-        <!-- Step 2: Result Page -->
-        <div id="page2" class="page">
-            <span id="congratsText" class="congrats-text">축하합니다!</span>
-            <p style="color: var(--text-secondary);">세상에 태어날 아이의 이름은...</p>
-            <div class="full-name-display">
-                이<span id="chosenName"></span>
-            </div>
-            <button class="btn-secondary" onclick="reset()">◀ 다시 고르기</button>
+        <!-- Step 2: Result -->
+        <div id="page-result" class="page">
+            <div id="genderBadge" class="gender-badge">딸입니다!</div>
+            <p style="color: var(--text-dim); font-weight: 500;">축하합니다! 최종 확정된 이름은</p>
+            <div class="result-name">이<span id="finalName">불킥</span></div>
+            <button class="btn-main" onclick="resetApp()">다른 이름도 고르기</button>
+            <br>
+            <button class="btn-text" onclick="resetApp()">◀ 처음으로 돌아가기</button>
         </div>
     </div>
 
@@ -192,49 +271,63 @@
             "모카세", "불킥", "리조리", "지안", "서준", "하린", 
             "유진", "도윤", "시아", "은우", "태오", "아린",
             "루피", "뽀로로", "자바", "파이썬", "디비", "서버",
-            "이름", "무명", "대박", "로또", "행복", "사랑"
+            "이름", "무명", "대박", "로또", "행복", "사랑",
+            "코딩", "버그", "커밋", "푸시", "클라우드", "에이아이"
         ];
 
         function shuffleNames() {
             const shuffled = [...namePool].sort(() => 0.5 - Math.random());
             const selected = shuffled.slice(0, 6);
-            
             const grid = document.getElementById('nameGrid');
-            grid.innerHTML = '';
             
-            selected.forEach(name => {
-                const card = document.createElement('div');
-                card.className = 'name-card';
-                card.innerText = name;
-                card.onclick = () => showResult(name);
-                grid.appendChild(card);
-            });
+            // Add slight delay for animation feel
+            grid.style.opacity = '0';
+            setTimeout(() => {
+                grid.innerHTML = '';
+                selected.forEach(name => {
+                    const card = document.createElement('div');
+                    card.className = 'name-card';
+                    card.innerText = name;
+                    card.onclick = () => showResult(name);
+                    grid.appendChild(card);
+                });
+                grid.style.opacity = '1';
+                grid.style.transition = 'opacity 0.3s';
+            }, 200);
         }
 
         function showResult(name) {
             const genders = ["아들", "딸"];
-            const randomGender = genders[Math.floor(Math.random() * genders.length)];
+            const gender = genders[Math.floor(Math.random() * genders.length)];
             
-            document.getElementById('congratsText').innerText = `🎉 축하합니다! ${randomGender}입니다!`;
-            document.getElementById('chosenName').innerText = name;
+            document.getElementById('genderBadge').innerText = `✨ 축하합니다! ${gender}입니다!`;
+            document.getElementById('finalName').innerText = name;
 
-            document.getElementById('page1').classList.remove('active');
+            // Confetti Blast
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#6366f1', '#a855f7', '#ec4899', '#ffffff']
+            });
+
+            // Transition
+            document.getElementById('page-selection').classList.remove('active');
             setTimeout(() => {
-                document.getElementById('page2').classList.add('active');
-            }, 100);
+                document.getElementById('page-result').classList.add('active');
+            }, 150);
         }
 
-        function reset() {
-            document.getElementById('page2').classList.remove('active');
+        function resetApp() {
+            document.getElementById('page-result').classList.remove('active');
             setTimeout(() => {
-                document.getElementById('page1').classList.add('active');
-                shuffleNames(); // 돌아갈 때 새로운 이름들로 셔플
-            }, 100);
+                document.getElementById('page-selection').classList.add('active');
+                shuffleNames();
+            }, 150);
         }
 
-        // 초기화
+        // Initialize
         shuffleNames();
     </script>
-
 </body>
 </html>
