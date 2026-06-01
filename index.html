@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Dark Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #0b0e14;
+            --bg-card: #151921;
+            --bg-sidebar: #0f1218;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --accent: #6366f1;
+            --accent-glow: rgba(99, 102, 241, 0.2);
+            --border: #262c36;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        aside {
+            width: 260px;
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .menu-item {
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin-bottom: 0.5rem;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .menu-item.active, .menu-item:hover {
+            background-color: var(--accent);
+            color: white;
+            box-shadow: 0 4px 12px var(--accent-glow);
+        }
+
+        /* Main Content */
+        main {
+            margin-left: 260px;
+            flex: 1;
+            padding: 2.5rem;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .search-bar {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 0.6rem 1.2rem;
+            border-radius: 2rem;
+            width: 300px;
+            color: white;
+        }
+
+        .profile-btn {
+            background: var(--accent);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+        }
+
+        .stat-card h4 {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card .value {
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+
+        .content-area {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .chart-box, .recent-activity {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+            min-height: 300px;
+        }
+
+        h2 { margin-bottom: 1.5rem; }
+
+        @media (max-width: 1024px) {
+            .content-area { grid-template-columns: 1fr; }
+            aside { width: 80px; padding: 1.5rem 1rem; }
+            aside .menu-text, aside .logo span { display: none; }
+            main { margin-left: 80px; }
+        }
+    </style>
+</head>
+<body>
+
+    <aside>
+        <div class="logo">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+            <span>STUDY.</span>
+        </div>
+        <nav>
+            <a href="#" class="menu-item active">
+                <span class="menu-text">Dashboard</span>
+            </a>
+            <a href="#" class="menu-item">
+                <span class="menu-text">Analytics</span>
+            </a>
+            <a href="#" class="menu-item">
+                <span class="menu-text">Projects</span>
+            </a>
+            <a href="#" class="menu-item">
+                <span class="menu-text">Settings</span>
+            </a>
+        </nav>
+    </aside>
+
+    <main>
+        <header>
+            <h1>Welcome back, Eunjun!</h1>
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <input type="text" class="search-bar" placeholder="Search anything...">
+                <button class="profile-btn"></button>
+            </div>
+        </header>
+
+        <section class="stats-grid">
+            <div class="stat-card">
+                <h4>Total Revenue</h4>
+                <div class="value">$24,500</div>
+                <div style="color: #10b981; font-size: 0.8rem; margin-top: 0.5rem;">↑ 12% from last month</div>
+            </div>
+            <div class="stat-card">
+                <h4>Active Users</h4>
+                <div class="value">1,284</div>
+                <div style="color: #10b981; font-size: 0.8rem; margin-top: 0.5rem;">↑ 5.4% from last week</div>
+            </div>
+            <div class="stat-card">
+                <h4>New Projects</h4>
+                <div class="value">12</div>
+                <div style="color: #f43f5e; font-size: 0.8rem; margin-top: 0.5rem;">↓ 2% from last month</div>
+            </div>
+        </section>
+
+        <section class="content-area">
+            <div class="chart-box">
+                <h2>Performance Overview</h2>
+                <div style="height: 200px; display: flex; align-items: flex-end; gap: 10px; padding-bottom: 20px;">
+                    <!-- Simple CSS bar chart placeholder -->
+                    <div style="flex: 1; background: var(--accent); height: 40%; border-radius: 4px;"></div>
+                    <div style="flex: 1; background: var(--accent); height: 70%; border-radius: 4px;"></div>
+                    <div style="flex: 1; background: var(--accent); height: 55%; border-radius: 4px;"></div>
+                    <div style="flex: 1; background: var(--accent); height: 90%; border-radius: 4px;"></div>
+                    <div style="flex: 1; background: var(--accent); height: 65%; border-radius: 4px;"></div>
+                    <div style="flex: 1; background: var(--accent); height: 80%; border-radius: 4px;"></div>
+                </div>
+            </div>
+            <div class="recent-activity">
+                <h2>Recent Activity</h2>
+                <ul style="list-style: none; color: var(--text-secondary); font-size: 0.9rem;">
+                    <li style="margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">✅ Pushed to 'main' branch</li>
+                    <li style="margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">🚀 Deployed to Cloudflare</li>
+                    <li style="margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">📝 Updated index.html</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+</body>
+</html>
