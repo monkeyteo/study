@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Dark Dashboard</title>
+    <title>이세중 자식 이름 추천기</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -28,201 +28,137 @@
             background-color: var(--bg-main);
             color: var(--text-primary);
             display: flex;
+            justify-content: center;
+            align-items: center;
             min-height: 100vh;
+            overflow: hidden;
         }
 
-        /* Sidebar */
-        aside {
-            width: 260px;
-            background-color: var(--bg-sidebar);
-            border-right: 1px solid var(--border);
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            position: fixed;
-            height: 100vh;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--accent);
-            margin-bottom: 3rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .menu-item {
-            padding: 0.75rem 1rem;
-            border-radius: 0.5rem;
-            color: var(--text-secondary);
-            text-decoration: none;
-            margin-bottom: 0.5rem;
-            transition: all 0.2s;
-            font-weight: 500;
-        }
-
-        .menu-item.active, .menu-item:hover {
-            background-color: var(--accent);
-            color: white;
-            box-shadow: 0 4px 12px var(--accent-glow);
-        }
-
-        /* Main Content */
-        main {
-            margin-left: 260px;
-            flex: 1;
-            padding: 2.5rem;
-        }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 3rem;
-        }
-
-        .search-bar {
+        .container {
+            width: 100%;
+            max-width: 600px;
             background: var(--bg-card);
+            padding: 3rem;
+            border-radius: 1.5rem;
             border: 1px solid var(--border);
-            padding: 0.6rem 1.2rem;
-            border-radius: 2rem;
-            width: 300px;
-            color: white;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
 
-        .profile-btn {
-            background: var(--accent);
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #6366f1, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .stats-grid {
+        .congrats-box {
+            background: var(--bg-sidebar);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--accent);
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .name-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
             margin-bottom: 2rem;
         }
 
-        .stat-card {
-            background: var(--bg-card);
-            padding: 1.5rem;
-            border-radius: 1rem;
+        .name-card {
+            background: var(--bg-sidebar);
+            padding: 1.25rem;
+            border-radius: 0.75rem;
             border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1.1rem;
+            font-weight: 500;
         }
 
-        .stat-card h4 {
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            margin-bottom: 0.5rem;
+        .name-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-3px);
+            background: rgba(99, 102, 241, 0.1);
         }
 
-        .stat-card .value {
-            font-size: 1.75rem;
+        .result-box {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
             font-weight: 700;
+            border-top: 1px solid var(--border);
+            margin-top: 1rem;
         }
 
-        .content-area {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 1.5rem;
+        .reset-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 1rem;
         }
 
-        .chart-box, .recent-activity {
-            background: var(--bg-card);
-            padding: 1.5rem;
-            border-radius: 1rem;
-            border: 1px solid var(--border);
-            min-height: 300px;
-        }
-
-        h2 { margin-bottom: 1.5rem; }
-
-        @media (max-width: 1024px) {
-            .content-area { grid-template-columns: 1fr; }
-            aside { width: 80px; padding: 1.5rem 1rem; }
-            aside .menu-text, aside .logo span { display: none; }
-            main { margin-left: 80px; }
+        .reset-btn:hover {
+            opacity: 0.9;
         }
     </style>
 </head>
 <body>
 
-    <aside>
-        <div class="logo">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
-            <span>STUDY.</span>
+    <div class="container">
+        <h1>👶 이세중 자식 이름 추천기</h1>
+        
+        <div id="congrats" class="congrats-box">
+            결과를 확인하는 중...
         </div>
-        <nav>
-            <a href="#" class="menu-item active">
-                <span class="menu-text">Dashboard</span>
-            </a>
-            <a href="#" class="menu-item">
-                <span class="menu-text">Analytics</span>
-            </a>
-            <a href="#" class="menu-item">
-                <span class="menu-text">Projects</span>
-            </a>
-            <a href="#" class="menu-item">
-                <span class="menu-text">Settings</span>
-            </a>
-        </nav>
-    </aside>
 
-    <main>
-        <header>
-            <h1>Welcome back, Eunjun!</h1>
-            <div style="display: flex; gap: 1rem; align-items: center;">
-                <input type="text" class="search-bar" placeholder="Search anything...">
-                <button class="profile-btn"></button>
-            </div>
-        </header>
+        <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">마음에 드는 이름을 선택해 보세요!</p>
 
-        <section class="stats-grid">
-            <div class="stat-card">
-                <h4>Total Revenue</h4>
-                <div class="value">$24,500</div>
-                <div style="color: #10b981; font-size: 0.8rem; margin-top: 0.5rem;">↑ 12% from last month</div>
-            </div>
-            <div class="stat-card">
-                <h4>Active Users</h4>
-                <div class="value">1,284</div>
-                <div style="color: #10b981; font-size: 0.8rem; margin-top: 0.5rem;">↑ 5.4% from last week</div>
-            </div>
-            <div class="stat-card">
-                <h4>New Projects</h4>
-                <div class="value">12</div>
-                <div style="color: #f43f5e; font-size: 0.8rem; margin-top: 0.5rem;">↓ 2% from last month</div>
-            </div>
-        </section>
+        <div class="name-grid">
+            <div class="name-card" onclick="selectName('모카세')">모카세</div>
+            <div class="name-card" onclick="selectName('불킥')">불킥</div>
+            <div class="name-card" onclick="selectName('리조리')">리조리</div>
+            <div class="name-card" onclick="selectName('지안')">지안</div>
+            <div class="name-card" onclick="selectName('서준')">서준</div>
+            <div class="name-card" onclick="selectName('하린')">하린</div>
+        </div>
 
-        <section class="content-area">
-            <div class="chart-box">
-                <h2>Performance Overview</h2>
-                <div style="height: 200px; display: flex; align-items: flex-end; gap: 10px; padding-bottom: 20px;">
-                    <!-- Simple CSS bar chart placeholder -->
-                    <div style="flex: 1; background: var(--accent); height: 40%; border-radius: 4px;"></div>
-                    <div style="flex: 1; background: var(--accent); height: 70%; border-radius: 4px;"></div>
-                    <div style="flex: 1; background: var(--accent); height: 55%; border-radius: 4px;"></div>
-                    <div style="flex: 1; background: var(--accent); height: 90%; border-radius: 4px;"></div>
-                    <div style="flex: 1; background: var(--accent); height: 65%; border-radius: 4px;"></div>
-                    <div style="flex: 1; background: var(--accent); height: 80%; border-radius: 4px;"></div>
-                </div>
-            </div>
-            <div class="recent-activity">
-                <h2>Recent Activity</h2>
-                <ul style="list-style: none; color: var(--text-secondary); font-size: 0.9rem;">
-                    <li style="margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">✅ Pushed to 'main' branch</li>
-                    <li style="margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">🚀 Deployed to Cloudflare</li>
-                    <li style="margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">📝 Updated index.html</li>
-                </ul>
-            </div>
-        </section>
-    </main>
+        <div id="result" class="result-box">
+            이름을 선택해 주세요
+        </div>
+
+        <button class="reset-btn" onclick="init()">다시 하기</button>
+    </div>
+
+    <script>
+        const surname = "이";
+        
+        function init() {
+            const genders = ["아들", "딸"];
+            const randomGender = genders[Math.floor(Math.random() * genders.length)];
+            document.getElementById('congrats').innerText = `🎉 축하합니다! ${randomGender}입니다!`;
+            document.getElementById('result').innerText = "이름을 선택해 주세요";
+        }
+
+        function selectName(name) {
+            document.getElementById('result').innerHTML = `최종 이름: <span style="color: var(--accent); margin-left: 10px;">${surname}${name}</span>`;
+        }
+
+        // 초기 실행
+        init();
+    </script>
 
 </body>
 </html>
