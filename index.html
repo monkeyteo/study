@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>이세중 자식 이름 추천기</title>
+    <title>이세중님의 자식 이름 추천기</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -64,7 +64,7 @@
 
         h1 {
             font-size: 1.8rem;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             background: linear-gradient(to right, #818cf8, #c084fc);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -74,6 +74,7 @@
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 1.25rem;
+            margin-bottom: 1.5rem;
         }
 
         .name-card {
@@ -121,30 +122,43 @@
             text-shadow: 0 0 20px var(--accent-glow);
         }
 
-        .reset-btn {
+        .btn-secondary {
             background: transparent;
             color: var(--text-secondary);
             border: 1px solid var(--border);
-            padding: 0.8rem 2rem;
+            padding: 0.6rem 1.5rem;
             border-radius: 2rem;
             cursor: pointer;
             font-weight: 500;
             transition: all 0.2s;
-            margin-top: 2rem;
+            margin-top: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .reset-btn:hover {
-            border-color: var(--text-secondary);
-            color: var(--text-primary);
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            color: var(--accent);
         }
 
-        /* Particle effect placeholder */
-        .confetti {
-            position: absolute;
-            top: -50px;
-            left: 50%;
-            pointer-events: none;
+        .shuffle-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 1rem;
+            width: 100%;
+            transition: opacity 0.2s;
         }
+
+        .shuffle-btn:hover {
+            opacity: 0.9;
+        }
+
     </style>
 </head>
 <body>
@@ -152,16 +166,14 @@
     <div class="container">
         <!-- Step 1: Selection Page -->
         <div id="page1" class="page active">
-            <h1>👶 자식 이름 고르기</h1>
-            <p style="color: var(--text-secondary); margin-bottom: 2rem;">이세중 님의 아이 이름을 하나 선택해주세요.</p>
-            <div class="name-grid">
-                <div class="name-card" onclick="showResult('모카세')">모카세</div>
-                <div class="name-card" onclick="showResult('불킥')">불킥</div>
-                <div class="name-card" onclick="showResult('리조리')">리조리</div>
-                <div class="name-card" onclick="showResult('지안')">지안</div>
-                <div class="name-card" onclick="showResult('서준')">서준</div>
-                <div class="name-card" onclick="showResult('하린')">하린</div>
+            <h1>👶 이세중님의 자식 이름 고르기</h1>
+            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">마음에 드는 이름을 하나 선택해주세요.</p>
+            
+            <div id="nameGrid" class="name-grid">
+                <!-- Names will be injected here -->
             </div>
+
+            <button class="shuffle-btn" onclick="shuffleNames()">🌀 다른 이름 추천받기</button>
         </div>
 
         <!-- Step 2: Result Page -->
@@ -171,20 +183,41 @@
             <div class="full-name-display">
                 이<span id="chosenName"></span>
             </div>
-            <button class="reset-btn" onclick="reset()">다시 선택하기</button>
+            <button class="btn-secondary" onclick="reset()">◀ 다시 고르기</button>
         </div>
     </div>
 
     <script>
+        const namePool = [
+            "모카세", "불킥", "리조리", "지안", "서준", "하린", 
+            "유진", "도윤", "시아", "은우", "태오", "아린",
+            "루피", "뽀로로", "자바", "파이썬", "디비", "서버",
+            "이름", "무명", "대박", "로또", "행복", "사랑"
+        ];
+
+        function shuffleNames() {
+            const shuffled = [...namePool].sort(() => 0.5 - Math.random());
+            const selected = shuffled.slice(0, 6);
+            
+            const grid = document.getElementById('nameGrid');
+            grid.innerHTML = '';
+            
+            selected.forEach(name => {
+                const card = document.createElement('div');
+                card.className = 'name-card';
+                card.innerText = name;
+                card.onclick = () => showResult(name);
+                grid.appendChild(card);
+            });
+        }
+
         function showResult(name) {
             const genders = ["아들", "딸"];
             const randomGender = genders[Math.floor(Math.random() * genders.length)];
             
-            // 데이터 설정
             document.getElementById('congratsText').innerText = `🎉 축하합니다! ${randomGender}입니다!`;
             document.getElementById('chosenName').innerText = name;
 
-            // 페이지 전환 애니메이션
             document.getElementById('page1').classList.remove('active');
             setTimeout(() => {
                 document.getElementById('page2').classList.add('active');
@@ -195,8 +228,12 @@
             document.getElementById('page2').classList.remove('active');
             setTimeout(() => {
                 document.getElementById('page1').classList.add('active');
+                shuffleNames(); // 돌아갈 때 새로운 이름들로 셔플
             }, 100);
         }
+
+        // 초기화
+        shuffleNames();
     </script>
 
 </body>
