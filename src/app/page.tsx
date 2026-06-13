@@ -12,18 +12,34 @@ export default function LandingPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log("LandingPage mounted, initializing Firebase...");
+    if (!db) {
+      console.error("Database not initialized. Check environment variables.");
+      setLoading(false);
+      return;
+    }
+
     const dbRef = ref(db, "/");
-    return onValue(dbRef, (snapshot) => {
-      if (snapshot.exists()) {
-        setData(snapshot.val());
+    const unsubscribe = onValue(dbRef, (snapshot) => {
+      try {
+        if (snapshot.exists()) {
+          setData(snapshot.val());
+        }
+      } catch (err) {
+        console.error("Error processing data:", err);
       }
       setLoading(false);
+    }, (error) => {
+      console.error("Firebase onValue error:", error);
+      setLoading(false);
     });
+
+    return () => unsubscribe();
   }, []);
 
   const teams = data ? Object.entries(data.teams || {}).map(([id, team]) => {
     const totalCalories = Object.values(team.members || {}).reduce((sum, m) => sum + (m.calories || 0), 0);
-    const progress = Math.min((totalCalories / data.event.targetCalories) * 100, 100);
+    const progress = Math.min((totalCalories / (data.event?.targetCalories || 10000)) * 100, 100);
     return { id, ...team, totalCalories, progress };
   }) : [];
 
@@ -36,7 +52,7 @@ export default function LandingPage() {
 
   const beerpongPlayers = data ? Object.entries(data.beerpong || {})
     .map(([id, p]) => ({ id, ...p }))
-    .sort((a, b) => b.score - a.score)
+    .sort((a, b) => (b.score || 0) - (a.score || 0))
     .slice(0, 5) : [];
 
   return (
@@ -91,7 +107,7 @@ export default function LandingPage() {
             {data && (
               <div className="text-right">
                 <div className="text-sm font-bold text-yellow-500">GOAL</div>
-                <div className="text-4xl font-black">{data.event.targetCalories.toLocaleString()} KCAL</div>
+                <div className="text-4xl font-black">{(data.event?.targetCalories || 0).toLocaleString()} KCAL</div>
               </div>
             )}
           </div>

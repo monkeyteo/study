@@ -91,12 +91,13 @@ export default function MePage() {
             
             {/* Team Progress calculation */}
             {(() => {
-              const teamTotal = Object.values(myInfo.team.members).reduce((sum, m) => sum + m.calories, 0);
-              const progress = Math.min((teamTotal / data.event.targetCalories) * 100, 100);
+              const teamTotal = Object.values(myInfo.team.members || {}).reduce((sum, m) => sum + m.calories, 0);
+              const targetCalories = data?.event?.targetCalories || 10000;
+              const progress = Math.min((teamTotal / targetCalories) * 100, 100);
               return (
                 <div className="mt-6">
                   <div className="mb-2 flex justify-between font-bold">
-                    <span>{teamTotal.toLocaleString()} / {data.event.targetCalories.toLocaleString()} KCAL</span>
+                    <span>{teamTotal.toLocaleString()} / {targetCalories.toLocaleString()} KCAL</span>
                     <span>{Math.floor(progress)}%</span>
                   </div>
                   <div className="h-4 w-full overflow-hidden rounded-full bg-black">

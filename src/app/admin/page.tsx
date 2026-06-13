@@ -36,15 +36,16 @@ export default function AdminPage() {
     await update(ref(db), { [caloriePath]: newCalorie });
 
     // Check if team goal reached
-    const team = data?.teams[teamId];
+    const team = data?.teams?.[teamId];
     if (team) {
-      const currentTotal = Object.entries(team.members).reduce((sum, [id, m]) => {
+      const currentTotal = Object.entries(team.members || {}).reduce((sum, [id, m]) => {
         return sum + (id === memberId ? newCalorie : m.calories);
       }, 0);
 
-      if (currentTotal >= (data?.event.targetCalories || 10000) && !team.completedAt) {
+      const targetCalories = data?.event?.targetCalories || 10000;
+      if (currentTotal >= targetCalories && !team.completedAt) {
         await update(ref(db), { [`teams/${teamId}/completedAt`]: Date.now() });
-      } else if (currentTotal < (data?.event.targetCalories || 10000) && team.completedAt) {
+      } else if (currentTotal < targetCalories && team.completedAt) {
         await update(ref(db), { [`teams/${teamId}/completedAt`]: null });
       }
     }
