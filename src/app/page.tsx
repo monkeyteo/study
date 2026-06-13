@@ -204,16 +204,6 @@ export default function LandingPage() {
         <p className="text-sm">© 2026 CALORIE CHALLENGE. ALL RIGHTS RESERVED.</p>
         <p className="mt-2 text-xs">BUILT WITH NEXT.JS & FIREBASE</p>
       </footer>
-
-      <style jsx global>{`
-        @keyframes fade-in-up {
-          from { opacity: 0; transform: translateY(40px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in-up {
-          animation: fade-in-up 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-        }
-      `}</style>
     </div>
   );
 }

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { ref, onValue, update, set, push } from "firebase/database";
 import { db } from "@/lib/firebase";
 import { DatabaseSchema, Member } from "@/types";
-import { Lock, Search, Save, Gift, RefreshCw } from "lucide-react";
+import { Lock, Search, Save, Gift, RefreshCw, Beer } from "lucide-react";
 
 export default function AdminPage() {
   const [pin, setPin] = useState("");
